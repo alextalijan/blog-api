@@ -144,7 +144,22 @@ module.exports = {
     res.json(comment);
   },
   deleteComment: async (req, res) => {
-    const comment = await prisma.comment.delete({
+    // Check if the user is authorized to delete the comment
+    const comment = await prisma.comment.findUnique({
+      where: {
+        id: req.params.commentId,
+      },
+      select: {
+        userId: true,
+      },
+    });
+    if (req.user.id !== comment.userId) {
+      return res
+        .status(403)
+        .json({ success: false, message: 'Not authorized to delete this comment.' });
+    }
+
+    await prisma.comment.delete({
       where: {
         id: req.params.commentId,
       },

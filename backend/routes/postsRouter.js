@@ -7,7 +7,7 @@ const controller = require('../controllers/postsController');
 router.get('/', controller.getPosts);
 router.post('/', isLoggedIn, controller.addPost);
 router.get('/:postId', controller.getPost);
-// router.put('/:postId', isLoggedIn, controller.updatePost);
+router.put('/:postId', isLoggedIn, controller.updatePost);
 router.delete('/:postId', isLoggedIn, controller.deletePost);
 router.get('/:postId/comments', controller.getComments);
 router.post('/:postId/comments', isLoggedIn, controller.addComment);
