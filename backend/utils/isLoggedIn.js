@@ -14,7 +14,7 @@ function isLoggedIn(req, res, next) {
       }
 
       req.user = {
-        id: payload.userID,
+        id: payload.userId,
         isAuthor: payload.isAuthor,
       };
       next();
