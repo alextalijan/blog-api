@@ -8,7 +8,9 @@ module.exports = {
       where: {
         id: req.params.userId,
       },
-      include: {
+      select: {
+        username: true,
+        isAuthor: true,
         posts: true,
       },
     });
