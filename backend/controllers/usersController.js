@@ -3,7 +3,7 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 module.exports = {
-  usersGet: async (req, res) => {
+  getUsers: async (req, res) => {
     const users = await prisma.user.findMany();
 
     if (users.length === 0) {
@@ -12,7 +12,7 @@ module.exports = {
 
     res.json(users);
   },
-  userGet: async (req, res) => {
+  getUser: async (req, res) => {
     const user = await prisma.user.findUnique({
       where: {
         id: req.params.userId,

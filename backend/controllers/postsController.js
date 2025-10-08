@@ -3,7 +3,7 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 module.exports = {
-  postsGet: async (req, res) => {
+  getPosts: async (req, res) => {
     const posts = await prisma.post.findMany({
       include: {
         author: { select: { id: true, username: true } },
@@ -35,7 +35,7 @@ module.exports = {
 
     res.json(post);
   },
-  postGet: async (req, res) => {
+  getPost: async (req, res) => {
     const post = await prisma.post.findUnique({
       where: {
         id: req.params.postId,
@@ -78,7 +78,7 @@ module.exports = {
 
     res.json(post);
   },
-  commentsGet: async (req, res) => {
+  getComments: async (req, res) => {
     const comments = await prisma.comment.findMany({
       where: {
         postId: req.params.postId,

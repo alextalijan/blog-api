@@ -3,12 +3,12 @@ const { Router } = require('express');
 const router = Router();
 const controller = require('../controllers/postsController');
 
-router.get('/', controller.postsGet);
+router.get('/', controller.getPosts);
 router.post('/', controller.addPost);
-router.get('/:postId', controller.postGet);
+router.get('/:postId', controller.getPost);
 router.put('/:postId', controller.updatePost);
 router.delete('/:postId', controller.deletePost);
-router.get('/:postId/comments', controller.commentsGet);
+router.get('/:postId/comments', controller.getComments);
 router.post('/:postId/comments', controller.addComment);
 router.delete('/postId/comments/:commentId', controller.deleteComment);
 
