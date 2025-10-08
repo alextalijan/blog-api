@@ -69,6 +69,15 @@ module.exports = {
 
     res.json(post);
   },
+  deletePost: async (req, res) => {
+    const post = await prisma.post.delete({
+      where: {
+        id: req.params.postId,
+      },
+    });
+
+    res.json(post);
+  },
   commentsGet: async (req, res) => {
     const comments = await prisma.comment.findMany({
       where: {
@@ -94,6 +103,15 @@ module.exports = {
         text: json.text,
         postId: json.postId,
         userId: json.userId,
+      },
+    });
+
+    res.json(comment);
+  },
+  deleteComment: async (req, res) => {
+    const comment = await prisma.comment.delete({
+      where: {
+        id: req.params.commentId,
       },
     });
 
