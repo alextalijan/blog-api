@@ -23,6 +23,11 @@ module.exports = {
     res.json(posts);
   },
   addPost: async (req, res) => {
+    // Check if the user is authorized to add posts
+    if (!req.user.isAuthor) {
+      res.status(403).json({ success: false, message: 'Not authorized to add posts.' });
+    }
+
     const json = req.body;
 
     const post = await prisma.post.create({

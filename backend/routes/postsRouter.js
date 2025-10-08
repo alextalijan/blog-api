@@ -1,10 +1,11 @@
 const { Router } = require('express');
+const isLoggedIn = require('../utils/isLoggedIn');
 
 const router = Router();
 const controller = require('../controllers/postsController');
 
 router.get('/', controller.getPosts);
-router.post('/', controller.addPost);
+router.post('/', isLoggedIn, controller.addPost);
 router.get('/:postId', controller.getPost);
 router.put('/:postId', controller.updatePost);
 router.delete('/:postId', controller.deletePost);
