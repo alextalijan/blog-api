@@ -4,6 +4,23 @@ const bcrypt = require('bcryptjs');
 const prisma = new PrismaClient();
 
 module.exports = {
+  addUser: async (req, res) => {
+    const json = req.body;
+
+    const hash = await bcrypt.hash(json.password, 10);
+
+    const user = await prisma.user.create({
+      data: {
+        username: json.username,
+        hash,
+      },
+      select: {
+        username: true,
+      },
+    });
+
+    res.json({ success: true, message: `User ${user.username} created.` });
+  },
   getUser: async (req, res) => {
     const user = await prisma.user.findUnique({
       where: {
