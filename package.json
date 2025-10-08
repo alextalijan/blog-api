@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/alextalijan/blog-api#readme",
   "devDependencies": {
+    "dotenv": "^17.2.3",
     "eslint": "^9.37.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
@@ -26,7 +27,8 @@
     "prisma": "^6.17.0"
   },
   "dependencies": {
-    "@prisma/client": "^6.17.0"
+    "@prisma/client": "^6.17.0",
+    "express": "^5.1.0"
   },
   "prisma": {
     "schema": "backend/prisma/schema.prisma"
