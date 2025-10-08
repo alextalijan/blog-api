@@ -95,9 +95,6 @@ module.exports = {
       where: {
         id: req.params.postId,
       },
-      select: {
-        authorId: true,
-      },
     });
     if (req.user.id !== post.authorId) {
       return res
@@ -148,9 +145,6 @@ module.exports = {
     const comment = await prisma.comment.findUnique({
       where: {
         id: req.params.commentId,
-      },
-      select: {
-        userId: true,
       },
     });
     if (req.user.id !== comment.userId) {
