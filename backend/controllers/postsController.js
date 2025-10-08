@@ -13,7 +13,7 @@ module.exports = {
           },
         },
       },
-      orderBy: { date: 'desc' },
+      orderBy: { updatedAt: 'desc' },
     });
 
     if (posts.length === 0) {
@@ -21,6 +21,19 @@ module.exports = {
     }
 
     res.json(posts);
+  },
+  addPost: async (req, res) => {
+    const json = req.body;
+
+    const post = await prisma.post.create({
+      data: {
+        title: json.title,
+        text: json.text,
+        authorId: json.userId,
+      },
+    });
+
+    res.json(post);
   },
   postGet: async (req, res) => {
     const post = await prisma.post.findUnique({
@@ -40,7 +53,23 @@ module.exports = {
 
     res.json(post);
   },
-  postCommentsGet: async (req, res) => {
+  updatePost: async (req, res) => {
+    const json = req.body;
+
+    const post = await prisma.post.update({
+      where: {
+        id: json.postId,
+      },
+      data: {
+        title: json.title,
+        text: json.text,
+        published: json.published,
+      },
+    });
+
+    res.json(post);
+  },
+  commentsGet: async (req, res) => {
     const comments = await prisma.comment.findMany({
       where: {
         postId: req.params.postId,
@@ -48,7 +77,7 @@ module.exports = {
       include: {
         user: { select: { id: true, username: true } },
       },
-      orderBy: { date: 'desc' },
+      orderBy: { createdAt: 'desc' },
     });
 
     if (comments.length === 0) {
