@@ -7,6 +7,9 @@ const PORT = process.env.PORT || 3000;
 const postsRouter = require('./routes/postsRouter');
 const usersRouter = require('./routes/usersRouter');
 
+// Allow the app to parse incoming JSON objects in request
+app.use(express.json());
+
 app.use('/posts', postsRouter);
 app.use('/users', usersRouter);
 
