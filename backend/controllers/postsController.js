@@ -59,9 +59,24 @@ module.exports = {
     res.json(post);
   },
   updatePost: async (req, res) => {
+    // Check if the user is authorized to update the post
+    const post = await prisma.post.findUnique({
+      where: {
+        id: req.params.postId,
+      },
+      select: {
+        authorId: true,
+      },
+    });
+    if (req.user.id !== post.authorId) {
+      return res
+        .status(403)
+        .json({ success: false, message: 'Not authorized to update this post.' });
+    }
+
     const json = req.body;
 
-    const post = await prisma.post.update({
+    const updatedPost = await prisma.post.update({
       where: {
         id: req.params.postId,
       },
@@ -72,10 +87,25 @@ module.exports = {
       },
     });
 
-    res.json(post);
+    res.json(updatedPost);
   },
   deletePost: async (req, res) => {
-    const post = await prisma.post.delete({
+    // Check if the user is authorized to delete the post
+    const post = await prisma.post.findUnique({
+      where: {
+        id: req.params.postId,
+      },
+      select: {
+        authorId: true,
+      },
+    });
+    if (req.user.id !== post.authorId) {
+      return res
+        .status(403)
+        .json({ success: false, message: 'Not authorized to delete this post.' });
+    }
+
+    await prisma.post.delete({
       where: {
         id: req.params.postId,
       },
