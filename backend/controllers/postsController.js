@@ -86,4 +86,17 @@ module.exports = {
 
     res.json(comments);
   },
+  addComment: async (req, res) => {
+    const json = req.body;
+
+    const comment = await prisma.comment.create({
+      data: {
+        text: json.text,
+        postId: json.postId,
+        userId: json.userId,
+      },
+    });
+
+    res.json(comment);
+  },
 };
