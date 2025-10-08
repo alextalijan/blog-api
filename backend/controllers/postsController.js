@@ -34,7 +34,7 @@ module.exports = {
       data: {
         title: json.title,
         text: json.text,
-        authorId: json.userId,
+        authorId: req.user.id,
       },
     });
 
@@ -63,7 +63,7 @@ module.exports = {
 
     const post = await prisma.post.update({
       where: {
-        id: json.postId,
+        id: req.params.postId,
       },
       data: {
         title: json.title,
@@ -106,8 +106,8 @@ module.exports = {
     const comment = await prisma.comment.create({
       data: {
         text: json.text,
-        postId: json.postId,
-        userId: json.userId,
+        postId: req.params.postId,
+        userId: req.user.id,
       },
     });
 

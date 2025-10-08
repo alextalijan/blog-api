@@ -36,7 +36,7 @@ module.exports = {
 
     await prisma.user.update({
       where: {
-        id: req.params.userId,
+        id: req.user.id,
       },
       data: {
         hash,
