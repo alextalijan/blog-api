@@ -6,9 +6,14 @@ module.exports = {
   postsGet: async (req, res) => {
     const posts = await prisma.post.findMany({
       include: {
-        comments: true,
-        author: true,
+        author: { select: { id: true, username: true } },
+        _count: {
+          select: {
+            comments: true,
+          },
+        },
       },
+      orderBy: { date: 'desc' },
     });
 
     if (posts.length === 0) {
@@ -23,7 +28,8 @@ module.exports = {
         id: req.params.postId,
       },
       include: {
-        author: true,
+        author: { select: { id: true, username: true } },
+        _count: { select: { comments: true } },
       },
     });
 
@@ -40,8 +46,9 @@ module.exports = {
         postId: req.params.postId,
       },
       include: {
-        user: true,
+        user: { select: { id: true, username: true } },
       },
+      orderBy: { date: 'desc' },
     });
 
     if (comments.length === 0) {
@@ -49,22 +56,5 @@ module.exports = {
     }
 
     res.json(comments);
-  },
-  postCommentGet: async (req, res) => {
-    const comment = await prisma.comment.findUnique({
-      where: {
-        id: req.params.commentId,
-      },
-      include: {
-        user: true,
-      },
-    });
-
-    // If the comment doesn't exist, return status code
-    if (!comment) {
-      return res.status(404).json({ message: 'Comment does not exist.' });
-    }
-
-    res.json(comment);
   },
 };
