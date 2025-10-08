@@ -23,6 +23,13 @@ module.exports = {
     res.json(user);
   },
   updatePassword: async (req, res) => {
+    // If user is not authorized, don't allow it
+    if (req.user.id !== req.params.userId) {
+      return res
+        .status(403)
+        .json({ success: false, message: 'Not authorized to change password.' });
+    }
+
     const { password } = req.body;
 
     const hash = await bcrypt.hash(password, 10);
