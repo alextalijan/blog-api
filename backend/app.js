@@ -5,8 +5,10 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 const postsRouter = require('./routes/postsRouter');
+const usersRouter = require('./routes/usersRouter');
 
 app.use('/posts', postsRouter);
+app.use('/users', usersRouter);
 
 app.listen(PORT, (err) => {
   if (err) {
