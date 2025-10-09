@@ -1,9 +1,11 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, createContext } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import HomePage from './components/HomePage/HomePage';
 import LoginPage from './components/LoginPage/LoginPage';
 import AccountPage from './components/AccountPage/AccountPage';
+
+const UserContext = createContext();
 
 function App() {
   const [user, setUser] = useState(null);
@@ -26,13 +28,15 @@ function App() {
   }, []);
 
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/account" element={<AccountPage />} />
-      </Routes>
-    </Router>
+    <UserContext.Provider value={{ user, token }}>
+      <Router>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/account" element={<AccountPage />} />
+        </Routes>
+      </Router>
+    </UserContext.Provider>
   );
 }
 
