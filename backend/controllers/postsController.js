@@ -16,10 +16,6 @@ module.exports = {
       orderBy: { updatedAt: 'desc' },
     });
 
-    if (posts.length === 0) {
-      return res.json({ message: 'There are no posts.' });
-    }
-
     res.json(posts);
   },
   addPost: async (req, res) => {
@@ -120,10 +116,6 @@ module.exports = {
       },
       orderBy: { createdAt: 'desc' },
     });
-
-    if (comments.length === 0) {
-      return res.json({ message: 'There are no comments.' });
-    }
 
     res.json(comments);
   },
