@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import Post from './components/Post';
+import Post from './components/Post/Post';
 
 function App() {
   const [posts, setPosts] = useState([]);
@@ -35,7 +35,7 @@ function App() {
       ) : (
         <div className="posts">
           {posts.map((post) => {
-            <Post id={post.id} title={post.title} text={post.text} />;
+            return <Post key={post.id} id={post.id} title={post.title} text={post.text} />;
           })}
         </div>
       )}
