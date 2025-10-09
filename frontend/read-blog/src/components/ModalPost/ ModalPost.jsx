@@ -57,7 +57,7 @@ function ModalPost({ postId, handleClick }) {
   function handleFormSubmit() {}
 
   return (
-    <div>
+    <dialog open>
       <button type="button" onClick={handleClick} className={styles['close-btn']}>
         Close
       </button>
@@ -101,7 +101,7 @@ function ModalPost({ postId, handleClick }) {
           )}
         </div>
       )}
-    </div>
+    </dialog>
   );
 }
 
