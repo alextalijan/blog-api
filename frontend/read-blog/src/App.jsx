@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import Post from './components/Post/Post';
 import './App.css';
+import ModalPost from './components/ModalPost/ ModalPost';
 
 function App() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [activePostId, setActivePostId] = useState(null);
 
   useEffect(() => {
     fetch('http://localhost:3000/posts')
@@ -45,10 +47,14 @@ function App() {
                 date={post.updatedAt}
                 author={post.author.username}
                 numOfComments={post._count.comments}
+                handleClick={() => setActivePostId(post.id)}
               />
             );
           })}
         </div>
+      )}
+      {activePostId && (
+        <ModalPost postId={activePostId} handleClick={() => setActivePostId(null)} />
       )}
     </>
   );
