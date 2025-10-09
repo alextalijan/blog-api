@@ -11,7 +11,7 @@ function App() {
     fetch('http://localhost:3000/posts')
       .then((response) => {
         if (!response.ok) {
-          throw new Error('Could not fetch posts.');
+          throw new Error();
         }
 
         return response.json();
@@ -20,7 +20,8 @@ function App() {
         setPosts(data);
       })
       .catch((error) => {
-        setError(error);
+        console.error(error);
+        setError(new Error('Failed to fetch posts. Please try again.'));
       })
       .finally(() => {
         setLoading(false);
@@ -29,10 +30,10 @@ function App() {
 
   return (
     <>
-      <h1>Posts</h1>
-      {error && <p>{error.message}</p>}
+      <h1 className="h1">Posts</h1>
+      {error && <p className="error">{error.message}</p>}
       {loading ? (
-        <p>Loading...</p>
+        <p className="loading">Loading...</p>
       ) : (
         <div className="posts">
           {posts.map((post) => {
