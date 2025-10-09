@@ -159,6 +159,9 @@ function ModalPost({ postId, handleClick }) {
                     <div key={comment.id} className={styles.comment}>
                       <b className={styles.commenter}>{comment.user.username}</b>
                       <p className={styles['comment-text']}>{comment.text}</p>
+                      <p className={styles['comment-date']}>
+                        Posted: {prettifyDate(comment.createdAt)}
+                      </p>
                     </div>
                   );
                 })}
