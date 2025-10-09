@@ -122,15 +122,20 @@ module.exports = {
   addComment: async (req, res) => {
     const json = req.body;
 
+    // Check if the comment is empty
+    if (!json.text.trim()) {
+      return res.status(400).json({ success: false, message: 'Cannot post empty comment.' });
+    }
+
     const comment = await prisma.comment.create({
       data: {
-        text: json.text,
+        text: json.text.trim(),
         postId: req.params.postId,
         userId: req.user.id,
       },
     });
 
-    res.json(comment);
+    res.json({ success: true, comment });
   },
   deleteComment: async (req, res) => {
     // Check if the user is authorized to delete the comment
