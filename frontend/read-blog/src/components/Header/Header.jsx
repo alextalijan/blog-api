@@ -1,7 +1,21 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './Header.module.css';
+import { useContext } from 'react';
+import { UserContext } from '../../App';
 
 function Header() {
+  const { setToken } = useContext(UserContext);
+
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    if (localStorage.getItem('token')) {
+      localStorage.removeItem('token');
+      setToken(null);
+      navigate('/');
+    }
+  }
+
   return (
     <header>
       <nav>
@@ -17,7 +31,7 @@ function Header() {
             </Link>
           </li>
           <li>
-            <button type="button" className={styles.link}>
+            <button type="button" className={styles.link} onClick={handleLogout}>
               Log Out
             </button>
           </li>
