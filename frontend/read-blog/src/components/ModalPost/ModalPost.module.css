@@ -77,6 +77,10 @@
   opacity: 0.6;
 }
 
+.login-message {
+  text-align: center;
+}
+
 .add-comment-form {
   display: flex;
   flex-direction: column;

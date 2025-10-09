@@ -5,7 +5,7 @@ import HomePage from './components/HomePage/HomePage';
 import LoginPage from './components/LoginPage/LoginPage';
 import AccountPage from './components/AccountPage/AccountPage';
 
-const UserContext = createContext();
+export const UserContext = createContext();
 
 function App() {
   const [user, setUser] = useState(null);

@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import styles from './ModalPost.module.css';
 import prettifyDate from '../../utils/prettifyDate';
+import { UserContext } from '../../App';
+import { Link } from 'react-router-dom';
 
 function ModalPost({ postId, handleClick }) {
   const [post, setPost] = useState(null);
@@ -9,6 +11,8 @@ function ModalPost({ postId, handleClick }) {
   const [comments, setComments] = useState([]);
   const [loadingComments, setLoadingComments] = useState(true);
   const [commentsError, setCommentsError] = useState(null);
+
+  const { user } = useContext(UserContext);
 
   // Fetch the post
   useEffect(() => {
@@ -54,7 +58,7 @@ function ModalPost({ postId, handleClick }) {
       });
   }, [postId]);
 
-  function handleFormSubmit() {}
+  function handlePostComment() {}
 
   return (
     <>
@@ -88,23 +92,29 @@ function ModalPost({ postId, handleClick }) {
           <p className={`${styles.loading} ${styles['comments-loading']}`}>Loading comments...</p>
         ) : (
           <div className={styles.comments}>
-            <form
-              action={`http://localhost:3000/posts/${postId}/comments`}
-              method="POST"
-              onSubmit={handleFormSubmit}
-              className={styles['add-comment-form']}
-            >
-              <label htmlFor="comment">Add Comment:</label>
-              <textarea
-                name="text"
-                id="comment"
-                className={styles['comment-content']}
-                rows={4}
-              ></textarea>
-              <button type="submit" className={styles['add-comment-btn']}>
-                Submit
-              </button>
-            </form>
+            {!user ? (
+              <p className={styles['login-message']}>
+                <Link to="/login">Log in</Link> to be able to comment.
+              </p>
+            ) : (
+              <form
+                action={`http://localhost:3000/posts/${postId}/comments`}
+                method="POST"
+                onSubmit={handlePostComment}
+                className={styles['add-comment-form']}
+              >
+                <label htmlFor="comment">Add Comment:</label>
+                <textarea
+                  name="text"
+                  id="comment"
+                  className={styles['comment-content']}
+                  rows={4}
+                ></textarea>
+                <button type="submit" className={styles['add-comment-btn']}>
+                  Submit
+                </button>
+              </form>
+            )}
             <b className={styles['comments-heading']}>Comments:</b>
             {comments.length === 0 ? (
               <p className={styles['no-comments-msg']}>No comments yet.</p>
