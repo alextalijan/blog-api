@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useEffect, useState, createContext } from 'react';
 import { jwtDecode } from 'jwt-decode';
+import Layout from './components/Layout/Layout';
 import HomePage from './components/HomePage/HomePage';
 import LoginPage from './components/LoginPage/LoginPage';
 import AccountPage from './components/AccountPage/AccountPage';
@@ -41,9 +42,11 @@ function App() {
     <UserContext.Provider value={{ user, setToken }}>
       <Router>
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<Layout />}>
+            <Route index element={<HomePage />} />
+            <Route path="/account" element={<AccountPage />} />
+          </Route>
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/account" element={<AccountPage />} />
         </Routes>
       </Router>
     </UserContext.Provider>
