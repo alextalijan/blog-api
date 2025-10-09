@@ -47,9 +47,13 @@ module.exports = {
     }
 
     // Generate jwt token
-    const token = jwt.sign({ userId: user.id, isAuthor: user.isAuthor }, process.env.JWT_SECRET, {
-      expiresIn: 7 * 24 * 60 * 60, // 7 days in seconds
-    });
+    const token = jwt.sign(
+      { userId: user.id, username: user.username, isAuthor: user.isAuthor },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: 7 * 24 * 60 * 60, // 7 days in seconds
+      }
+    );
 
     res.json({ success: true, message: 'Logged in.', token });
   },
