@@ -81,6 +81,10 @@
   text-align: center;
 }
 
+.postcomment-error {
+  color: darkred;
+}
+
 .add-comment-form {
   display: flex;
   flex-direction: column;

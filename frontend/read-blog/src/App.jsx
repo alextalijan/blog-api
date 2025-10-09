@@ -40,7 +40,7 @@ function App() {
   }, [token]);
 
   return (
-    <UserContext.Provider value={{ user, setToken }}>
+    <UserContext.Provider value={{ user, token, setToken }}>
       <Router>
         <Routes>
           <Route path="/" element={<Layout />}>

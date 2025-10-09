@@ -9,10 +9,12 @@ function ModalPost({ postId, handleClick }) {
   const [loadingPost, setLoadingPost] = useState(true);
   const [postError, setPostError] = useState(null);
   const [comments, setComments] = useState([]);
+  const [postCommentError, setPostCommentError] = useState(null);
   const [loadingComments, setLoadingComments] = useState(true);
   const [commentsError, setCommentsError] = useState(null);
+  const [refreshComments, setRefreshComments] = useState(false);
 
-  const { user } = useContext(UserContext);
+  const { user, token } = useContext(UserContext);
 
   // Fetch the post
   useEffect(() => {
@@ -56,9 +58,36 @@ function ModalPost({ postId, handleClick }) {
       .finally(() => {
         setLoadingComments(false);
       });
-  }, [postId]);
+  }, [postId, refreshComments]);
 
-  function handlePostComment() {}
+  function handlePostComment(event) {
+    event.preventDefault();
+    // First refresh the error for posting a comment
+    setPostCommentError(null);
+
+    fetch(`http://localhost:3000/posts/${postId}/comments`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        text: event.target.comment.value.trim(),
+      }),
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        if (!response.success) {
+          return setPostCommentError(response.message);
+        }
+
+        setRefreshComments((prev) => !prev);
+        event.target.comment.value = '';
+      })
+      .catch((error) => {
+        setPostCommentError(error.message);
+      });
+  }
 
   return (
     <>
@@ -97,23 +126,28 @@ function ModalPost({ postId, handleClick }) {
                 <Link to="/login">Log in</Link> to be able to comment.
               </p>
             ) : (
-              <form
-                action={`http://localhost:3000/posts/${postId}/comments`}
-                method="POST"
-                onSubmit={handlePostComment}
-                className={styles['add-comment-form']}
-              >
-                <label htmlFor="comment">Add Comment:</label>
-                <textarea
-                  name="text"
-                  id="comment"
-                  className={styles['comment-content']}
-                  rows={4}
-                ></textarea>
-                <button type="submit" className={styles['add-comment-btn']}>
-                  Submit
-                </button>
-              </form>
+              <>
+                {postCommentError && (
+                  <p className={styles['postcomment-error']}>{postCommentError}</p>
+                )}
+                <form
+                  action={`http://localhost:3000/posts/${postId}/comments`}
+                  method="POST"
+                  onSubmit={handlePostComment}
+                  className={styles['add-comment-form']}
+                >
+                  <label htmlFor="comment">Add Comment:</label>
+                  <textarea
+                    name="text"
+                    id="comment"
+                    className={styles['comment-content']}
+                    rows={4}
+                  ></textarea>
+                  <button type="submit" className={styles['add-comment-btn']}>
+                    Submit
+                  </button>
+                </form>
+              </>
             )}
             <b className={styles['comments-heading']}>Comments:</b>
             {comments.length === 0 ? (
