@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Post from './components/Post/Post';
+import './App.css';
 
 function App() {
   const [posts, setPosts] = useState([]);
@@ -35,7 +36,16 @@ function App() {
       ) : (
         <div className="posts">
           {posts.map((post) => {
-            return <Post key={post.id} id={post.id} title={post.title} text={post.text} />;
+            return (
+              <Post
+                key={post.id}
+                title={post.title}
+                text={post.text}
+                date={post.updatedAt}
+                author={post.author.username}
+                numOfComments={post._count.comments}
+              />
+            );
           })}
         </div>
       )}
