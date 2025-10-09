@@ -11,16 +11,15 @@ function App() {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
 
-  // On the initial mount, load user if he's authenticated
+  // On the initial mount, set the token from local storage
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      const decoded = jwtDecode(token);
+    const storageToken = localStorage.getItem('token');
+    if (storageToken) {
+      const decoded = jwtDecode(storageToken);
 
       // Check if the token has expired
       if (decoded.exp > Date.now() / 1000) {
-        setUser({ id: decoded.userId, username: decoded.username });
-        setToken(token);
+        setToken(storageToken);
       } else {
         // Delete the token from localStorage
         localStorage.removeItem('token');
@@ -28,8 +27,18 @@ function App() {
     }
   }, []);
 
+  // Every time the token changes, set the user
+  useEffect(() => {
+    if (token) {
+      const decoded = jwtDecode(token);
+      setUser({ id: decoded.userId, username: decoded.username });
+    } else {
+      setUser(null);
+    }
+  }, [token]);
+
   return (
-    <UserContext.Provider value={{ user, token, setUser, setToken }}>
+    <UserContext.Provider value={{ user, setToken }}>
       <Router>
         <Routes>
           <Route path="/" element={<HomePage />} />
