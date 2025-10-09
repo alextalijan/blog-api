@@ -11,6 +11,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
 
+  // On the initial mount, load user if he's authenticated
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
@@ -28,7 +29,7 @@ function App() {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, token }}>
+    <UserContext.Provider value={{ user, token, setUser, setToken }}>
       <Router>
         <Routes>
           <Route path="/" element={<HomePage />} />

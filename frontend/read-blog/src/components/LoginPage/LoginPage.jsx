@@ -1,14 +1,17 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './LoginPage.module.css';
+import { UserContext } from '../../App';
 
 function LoginPage() {
   const [error, setError] = useState(null);
 
+  const { setToken } = useContext(UserContext);
+
+  const navigate = useNavigate();
+
   function handleLogin(event) {
     event.preventDefault();
-
-    const navigate = useNavigate();
 
     // Send a post request to the server to log in
     fetch('http://localhost:3000/login', {
@@ -17,32 +20,27 @@ function LoginPage() {
       body: JSON.stringify({
         username: event.target.username.value,
         password: event.target.password.value,
+      }),
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        if (!response.success) {
+          return setError(response.message);
+        }
+
+        localStorage.setItem('token', response.token);
+        setToken(response.token);
+        navigate('/');
       })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error('Failed sending request to the server.');
-          }
-
-          return response.json();
-        })
-        .then((response) => {
-          if (!response.success) {
-            return setError(response.message);
-          }
-
-          localStorage.setItem('token', response.token);
-          navigate('/');
-        })
-        .catch((err) => {
-          setError(err.message);
-        }),
-    });
+      .catch((err) => {
+        setError(err.message);
+      });
   }
 
   return (
     <>
       <h1 className={styles.h1}>Log In</h1>
-      {error && <p>{error}</p>}
+      {error && <p className={styles['login-error']}>{error}</p>}
       <form action="" method="POST" className={styles.form} onSubmit={handleLogin}>
         <div className={styles.field}>
           <label htmlFor="username">Username:</label>
