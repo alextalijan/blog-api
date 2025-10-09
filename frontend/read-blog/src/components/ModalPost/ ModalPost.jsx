@@ -57,51 +57,73 @@ function ModalPost({ postId, handleClick }) {
   function handleFormSubmit() {}
 
   return (
-    <dialog open>
-      <button type="button" onClick={handleClick} className={styles['close-btn']}>
-        Close
-      </button>
-      {postError && <p>{postError.message}</p>}
-      {loadingPost ? (
-        <p>Loading the post...</p>
-      ) : (
-        <div className={styles['post-card']}>
-          <span className={styles.title}>{post.title}</span>
-          <span className={styles.author}>Author: {post.author.username}</span>
-          <p className={styles.text}>{post.text}</p>
-          <span className={styles.date}>Posted on {prettifyDate(post.updatedAt)}</span>
-          <span className={styles['comments-count']}>{post._count.comments} Comments</span>
-        </div>
-      )}
-      {commentsError && <p>{commentsError.message}</p>}
-      {loadingComments ? (
-        <p>Loading comments...</p>
-      ) : (
-        <div className={styles.comments}>
-          <form
-            action={`http://localhost:3000/posts/${postId}/comments`}
-            method="POST"
-            onSubmit={handleFormSubmit}
-          >
-            <label htmlFor="comment">Comment:</label>
-            <textarea name="text" id="comment"></textarea>
-            <button type="submit">Submit</button>
-          </form>
-          {comments.length === 0 ? (
-            <p>No comments yet.</p>
-          ) : (
-            comments.map((comment) => {
-              return (
-                <div key={comment.id}>
-                  <span>{comment.user.username}</span>
-                  <p>{comment.text}</p>
-                </div>
-              );
-            })
-          )}
-        </div>
-      )}
-    </dialog>
+    <>
+      <div
+        className={styles['modal-backdrop']}
+        role="button"
+        tabIndex="0"
+        onKeyDown={handleClick}
+        onClick={handleClick}
+      ></div>
+      <dialog open className={styles.modal}>
+        {postError ? (
+          <p className={styles['post-error']}>{postError.message}</p>
+        ) : loadingPost ? (
+          <p className={`${styles.loading} ${styles['post-loading']}`}>Loading the post...</p>
+        ) : (
+          <div className={styles.post}>
+            <span className={styles.title}>
+              <b>{post.title}</b> by {post.author.username}
+            </span>
+            <p className={styles.text}>{post.text}</p>
+            <div className={styles['post-footer']}>
+              <span className={styles.date}>Posted on {prettifyDate(post.updatedAt)}</span>
+              <span className={styles['comments-count']}>{post._count.comments} Comments</span>
+            </div>
+            <hr />
+          </div>
+        )}
+        {commentsError && <p className={styles['comments-error']}>{commentsError.message}</p>}
+        {loadingComments ? (
+          <p className={`${styles.loading} ${styles['comments-loading']}`}>Loading comments...</p>
+        ) : (
+          <div className={styles.comments}>
+            <form
+              action={`http://localhost:3000/posts/${postId}/comments`}
+              method="POST"
+              onSubmit={handleFormSubmit}
+              className={styles['add-comment-form']}
+            >
+              <label htmlFor="comment">Add Comment:</label>
+              <textarea
+                name="text"
+                id="comment"
+                className={styles['comment-content']}
+                rows={4}
+              ></textarea>
+              <button type="submit" className={styles['add-comment-btn']}>
+                Submit
+              </button>
+            </form>
+            <b className={styles['comments-heading']}>Comments:</b>
+            {comments.length === 0 ? (
+              <p className={styles['no-comments-msg']}>No comments yet.</p>
+            ) : (
+              <div className={styles.comments}>
+                {comments.map((comment) => {
+                  return (
+                    <div key={comment.id} className={styles.comment}>
+                      <b className={styles.commenter}>{comment.user.username}</b>
+                      <p className={styles['comment-text']}>{comment.text}</p>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        )}
+      </dialog>
+    </>
   );
 }
 
