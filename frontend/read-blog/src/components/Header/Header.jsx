@@ -4,7 +4,7 @@ import { useContext } from 'react';
 import { UserContext } from '../../App';
 
 function Header() {
-  const { setToken } = useContext(UserContext);
+  const { user, setToken } = useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -20,21 +20,31 @@ function Header() {
     <header>
       <nav>
         <ul className={styles.links}>
-          <li>
-            <Link to="/" className={styles.link}>
-              Home
-            </Link>
-          </li>
-          <li>
-            <Link to="/account" className={styles.link}>
-              My Account
-            </Link>
-          </li>
-          <li>
-            <button type="button" className={styles.link} onClick={handleLogout}>
-              Log Out
-            </button>
-          </li>
+          {user ? (
+            <>
+              <li>
+                <Link to="/" className={styles.link}>
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link to="/account" className={styles.link}>
+                  My Account
+                </Link>
+              </li>
+              <li>
+                <button type="button" className={styles.link} onClick={handleLogout}>
+                  Log Out
+                </button>
+              </li>
+            </>
+          ) : (
+            <li>
+              <Link to="/login" className={styles.link}>
+                Log In
+              </Link>
+            </li>
+          )}
         </ul>
       </nav>
       <hr />
