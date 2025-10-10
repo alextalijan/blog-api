@@ -51,7 +51,7 @@ function AuthorPage() {
       ) : authorLoading ? (
         <p className={`${styles.loading} ${styles.h1}`}>Loading author...</p>
       ) : (
-        <h1 className={styles.h1}>{author.username}</h1>
+        <h1 className={styles.h1}>Posts by {author.username}</h1>
       )}
       {postsError ? (
         <p className={styles['posts-error']}>{postsError}</p>
