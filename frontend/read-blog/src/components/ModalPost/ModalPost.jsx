@@ -238,7 +238,12 @@ function ModalPost({ postId, handleClick }) {
                       {editCommentId !== comment.id ? (
                         <p className={styles['comment-text']}>{comment.text}</p>
                       ) : (
-                        <textarea ref={editComment} defaultValue={comment.text}></textarea>
+                        <textarea
+                          className={styles['edit-comment-text']}
+                          ref={editComment}
+                          defaultValue={comment.text}
+                          rows={3}
+                        ></textarea>
                       )}
                       <p className={styles['comment-date']}>
                         Posted: {prettifyDate(comment.createdAt)}

@@ -162,6 +162,11 @@
   color: #660000;
 }
 
+.edit-comment-text {
+  resize: none;
+  padding: 0.5rem;
+}
+
 .comment-date {
   align-self: end;
   opacity: 0.6;
