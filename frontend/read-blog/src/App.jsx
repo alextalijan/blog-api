@@ -58,7 +58,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<HomePage />} />
-            <Route path="/author/:authorId" element={<AuthorPage />} />
+            <Route path="/authors/:authorId" element={<AuthorPage />} />
 
             {/* Protected section */}
             <Route element={<PrivateRoute />}>

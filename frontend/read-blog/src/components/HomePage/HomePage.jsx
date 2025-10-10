@@ -45,7 +45,7 @@ function HomePage() {
                 title={post.title}
                 text={post.text}
                 date={post.updatedAt}
-                author={post.author.username}
+                author={post.author}
                 numOfComments={post._count.comments}
                 handleClick={() => setActivePostId(post.id)}
               />
