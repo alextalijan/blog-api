@@ -1,0 +1,45 @@
+.h1 {
+  font-size: 3rem;
+  text-align: center;
+  margin: 4rem auto 2rem;
+}
+
+.login-error {
+  color: darkred;
+  text-align: center;
+}
+
+.form {
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 350px;
+  padding: 2rem;
+  margin: 0 auto;
+  gap: 1rem;
+}
+
+.field {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.5rem;
+}
+
+.input {
+  padding: 0 0.5rem;
+}
+
+.login-btn {
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  margin-top: 0.5rem;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.login-btn:hover {
+  transform: scale(1.2);
+}
