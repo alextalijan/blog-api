@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react';
 import { UserContext } from '../../App';
 import { useNavigate } from 'react-router-dom';
+import styles from './AccountPage.module.css';
 
 function AccountPage() {
   const [error, setError] = useState(null);
@@ -38,16 +39,33 @@ function AccountPage() {
 
   return (
     <>
-      <h1>My Account</h1>
-      <p>Welcome back {user.username}</p>
-      <h2>Change Password</h2>
-      {error && <p>{error}</p>}
-      <form action="" method="PUT" onSubmit={handlePasswordChange}>
-        <label htmlFor="password">New Password:</label>
-        <input type="password" name="password" id="password" />
-        <label htmlFor="passwordConfirmation">Confirm Password:</label>
-        <input type="password" name="passwordConfirmation" id="passwordConfirmation" />
-        <button type="submit">Change</button>
+      <h1 className={styles.h1}>My Account</h1>
+      <p className={styles['welcome-message']}>Welcome back {user.username}.</p>
+      <hr />
+      <h2 className={styles['change-password-heading']}>Change Password</h2>
+      {error && <p className={styles.error}>{error}</p>}
+      <form action="" method="PUT" onSubmit={handlePasswordChange} className={styles.form}>
+        <div className={styles.field}>
+          <label htmlFor="password">New Password:</label>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            className={styles['password-input']}
+          />
+        </div>
+        <div className={styles.field}>
+          <label htmlFor="passwordConfirmation">Confirm Password:</label>
+          <input
+            type="password"
+            name="passwordConfirmation"
+            id="passwordConfirmation"
+            className={styles['password-input']}
+          />
+        </div>
+        <button type="submit" className={styles['change-password-btn']}>
+          Change
+        </button>
       </form>
     </>
   );
