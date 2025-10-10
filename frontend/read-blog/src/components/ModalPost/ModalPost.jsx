@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, useRef } from 'react';
 import styles from './ModalPost.module.css';
 import prettifyDate from '../../utils/prettifyDate';
 import { UserContext } from '../../App';
@@ -13,8 +13,12 @@ function ModalPost({ postId, handleClick }) {
   const [loadingComments, setLoadingComments] = useState(true);
   const [commentsError, setCommentsError] = useState(null);
   const [refreshComments, setRefreshComments] = useState(false);
+  const [editCommentId, setEditCommentId] = useState(null);
 
   const { user, token } = useContext(UserContext);
+
+  // Capture reference to the edit comment text area
+  const editComment = useRef(null);
 
   // Fetch the post
   useEffect(() => {
@@ -109,6 +113,32 @@ function ModalPost({ postId, handleClick }) {
       });
   }
 
+  function handleUpdateComment(id) {
+    console.log(editComment.current);
+
+    fetch(`http://localhost:3000/posts/${postId}/comments/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        text: editComment.current.value.trim(),
+      }),
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        if (!response.success) {
+          return alert(response.message);
+        }
+
+        setRefreshComments((prev) => !prev);
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  }
+
   return (
     <>
       <div
@@ -184,8 +214,16 @@ function ModalPost({ postId, handleClick }) {
                             <button
                               type="button"
                               className={`${styles['comment-btn']} ${styles['comment-edit-btn']}`}
+                              onClick={
+                                editCommentId !== comment.id
+                                  ? () => setEditCommentId(comment.id)
+                                  : () => {
+                                      handleUpdateComment(comment.id);
+                                      setEditCommentId(null);
+                                    }
+                              }
                             >
-                              Edit
+                              {editCommentId === comment.id ? 'Done' : 'Edit'}
                             </button>
                             <button
                               type="button"
@@ -197,7 +235,11 @@ function ModalPost({ postId, handleClick }) {
                           </>
                         )}
                       </div>
-                      <p className={styles['comment-text']}>{comment.text}</p>
+                      {editCommentId !== comment.id ? (
+                        <p className={styles['comment-text']}>{comment.text}</p>
+                      ) : (
+                        <textarea ref={editComment} defaultValue={comment.text}></textarea>
+                      )}
                       <p className={styles['comment-date']}>
                         Posted: {prettifyDate(comment.createdAt)}
                       </p>
