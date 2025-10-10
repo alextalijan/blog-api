@@ -6,6 +6,7 @@ import Layout from './components/Layout/Layout';
 import HomePage from './components/HomePage/HomePage';
 import LoginPage from './components/LoginPage/LoginPage';
 import AccountPage from './components/AccountPage/AccountPage';
+import AuthorPage from './components/AuthorPage/AuthorPage';
 
 export const UserContext = createContext();
 
@@ -57,6 +58,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<HomePage />} />
+            <Route path="/author/:authorId" element={<AuthorPage />} />
 
             {/* Protected section */}
             <Route element={<PrivateRoute />}>
