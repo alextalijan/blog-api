@@ -107,7 +107,7 @@ module.exports = {
       },
     });
 
-    res.json(post);
+    res.json({ success: true, post });
   },
   getComments: async (req, res) => {
     const comments = await prisma.comment.findMany({
