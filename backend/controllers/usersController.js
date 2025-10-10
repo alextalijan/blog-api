@@ -12,11 +12,6 @@ module.exports = {
       select: {
         username: true,
         isAuthor: true,
-        posts: {
-          where: {
-            published: true,
-          },
-        },
       },
     });
 
@@ -60,5 +55,23 @@ module.exports = {
     });
 
     res.json({ success: true, message: 'Password updated.' });
+  },
+  getPostsFromUser: async (req, res) => {
+    const posts = await prisma.post.findMany({
+      where: {
+        authorId: req.params.userId,
+        published: true,
+      },
+      include: {
+        _count: {
+          select: {
+            comments: true,
+          },
+        },
+      },
+      orderBy: { updatedAt: 'desc' },
+    });
+
+    res.json({ success: true, posts });
   },
 };
