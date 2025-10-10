@@ -137,6 +137,37 @@ module.exports = {
 
     res.json({ success: true, comment });
   },
+  updateComment: async (req, res) => {
+    const json = req.body;
+
+    // Check if the user is authorized to update the comment
+    const comment = await prisma.comment.findUnique({
+      where: {
+        id: req.params.commentId,
+      },
+    });
+    if (req.user.id !== comment.userId) {
+      return res
+        .status(403)
+        .json({ success: false, message: 'Not authorized to update this comment.' });
+    }
+
+    // Check if input text is empty
+    if (!json.text.trim()) {
+      return res.status(400).json({ success: false, message: 'Cannot leave the comment empty.' });
+    }
+
+    const updatedComment = await prisma.comment.update({
+      where: {
+        id: req.params.commentId,
+      },
+      data: {
+        text: json.text.trim(),
+      },
+    });
+
+    res.json({ success: true, comment: updatedComment });
+  },
   deleteComment: async (req, res) => {
     // Check if the user is authorized to delete the comment
     const comment = await prisma.comment.findUnique({

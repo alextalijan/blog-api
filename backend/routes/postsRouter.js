@@ -11,6 +11,7 @@ router.put('/:postId', isLoggedIn, controller.updatePost);
 router.delete('/:postId', isLoggedIn, controller.deletePost);
 router.get('/:postId/comments', controller.getComments);
 router.post('/:postId/comments', isLoggedIn, controller.addComment);
+router.put('/:postId/comments/:commentId', isLoggedIn, controller.updateComment);
 router.delete('/:postId/comments/:commentId', isLoggedIn, controller.deleteComment);
 
 module.exports = router;
