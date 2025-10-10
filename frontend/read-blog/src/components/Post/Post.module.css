@@ -22,6 +22,10 @@
   font-size: 1.2rem;
 }
 
+.author-link {
+  color: darkcyan;
+}
+
 .text {
   font-size: 1.5rem;
   margin-bottom: 2rem;

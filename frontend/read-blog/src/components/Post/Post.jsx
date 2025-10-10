@@ -8,7 +8,10 @@ function Post({ title, text, date, numOfComments, handleClick, author = null }) 
       <h2 className={styles.title}>{title}</h2>
       {author && (
         <span className={styles.author}>
-          Author: <Link to={`/authors/${author.id}`}>{author.username}</Link>
+          Author:{' '}
+          <Link className={styles['author-link']} to={`/authors/${author.id}`}>
+            {author.username}
+          </Link>
         </span>
       )}
       <p className={styles.text}>{text}</p>
