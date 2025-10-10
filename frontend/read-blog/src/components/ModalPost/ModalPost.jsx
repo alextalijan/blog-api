@@ -114,8 +114,6 @@ function ModalPost({ postId, handleClick }) {
   }
 
   function handleUpdateComment(id) {
-    console.log(editComment.current);
-
     fetch(`http://localhost:3000/posts/${postId}/comments/${id}`, {
       method: 'PUT',
       headers: {
@@ -209,7 +207,7 @@ function ModalPost({ postId, handleClick }) {
                     <div key={comment.id} className={styles.comment}>
                       <div className={styles['comment-header']}>
                         <b className={styles.commenter}>{comment.user.username}</b>
-                        {comment.user.id === user.id && (
+                        {user && comment.user.id === user.id && (
                           <>
                             <button
                               type="button"
