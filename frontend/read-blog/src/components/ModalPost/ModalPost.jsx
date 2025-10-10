@@ -131,7 +131,7 @@ function ModalPost({ postId, handleClick }) {
             <p className={styles.text}>{post.text}</p>
             <div className={styles['post-footer']}>
               <span className={styles.date}>Posted on {prettifyDate(post.updatedAt)}</span>
-              <span className={styles['comments-count']}>{post._count.comments} Comments</span>
+              <span className={styles['comments-count']}>{comments.length} Comments</span>
             </div>
             <hr />
           </div>
