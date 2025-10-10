@@ -75,18 +75,28 @@ module.exports = {
 
     const json = req.body;
 
+    // Check if the new title is empty
+    if (!json.title.trim()) {
+      return res.status(400).json({ success: false, message: 'Post must have a title.' });
+    }
+
+    // Check if the edit input is empty
+    if (!json.text.trim()) {
+      return res.status(400).json({ success: false, message: 'Cannot leave the post empty.' });
+    }
+
     const updatedPost = await prisma.post.update({
       where: {
         id: req.params.postId,
       },
       data: {
-        title: json.title,
-        text: json.text,
+        title: json.title.trim(),
+        text: json.text.trim(),
         published: json.published,
       },
     });
 
-    res.json(updatedPost);
+    res.json({ success: true, post: updatedPost });
   },
   deletePost: async (req, res) => {
     // Check if the user is authorized to delete the post
