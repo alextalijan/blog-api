@@ -30,7 +30,19 @@ module.exports = {
         .json({ success: false, message: 'Not authorized to change password.' });
     }
 
-    const { password } = req.body;
+    const { password, passwordConfirmation } = req.body;
+
+    // If the password is empty, stop the user
+    if (!password.trim()) {
+      return res.status(400).json({ success: false, message: 'Empty password.' });
+    }
+
+    // If the password and confirmation do not match, stop user from proceeding
+    if (password !== passwordConfirmation) {
+      return res
+        .status(400)
+        .json({ success: false, message: 'Confirmation does not match password.' });
+    }
 
     const hash = await bcrypt.hash(password, 10);
 
