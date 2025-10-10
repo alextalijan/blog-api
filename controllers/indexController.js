@@ -41,9 +41,15 @@ module.exports = {
     if (!user) {
       return res.status(404).json({ success: false, message: 'User does not exist.' });
     }
+
     const passwordMatch = await bcrypt.compare(json.password, user.hash);
     if (!passwordMatch) {
       return res.status(401).json({ success: false, message: 'Password is incorrect.' });
+    }
+
+    // Check if the type of login is for author
+    if (json.authorLogin && !user.isAuthor) {
+      return res.status(403).json({ success: false, message: 'User is not an author.' });
     }
 
     // Generate jwt token
