@@ -12,15 +12,19 @@ module.exports = {
       select: {
         username: true,
         isAuthor: true,
-        posts: true,
+        posts: {
+          where: {
+            published: true,
+          },
+        },
       },
     });
 
     if (!user) {
-      return res.status(404).json({ message: 'User not found.' });
+      return res.status(404).json({ success: false, message: 'User not found.' });
     }
 
-    res.json(user);
+    res.json({ success: true, user });
   },
   updatePassword: async (req, res) => {
     // If user is not authorized, don't allow it
