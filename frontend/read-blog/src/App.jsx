@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { useEffect, useState, createContext } from 'react';
+import { useEffect, useState, createContext, useRef } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import Layout from './components/Layout/Layout';
@@ -11,36 +11,36 @@ export const UserContext = createContext();
 
 function App() {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
+  const tokenRef = useRef(localStorage.getItem('token'));
 
-  // On the initial mount, set the token from local storage
+  // On the initial mount, load the user if he exists
   useEffect(() => {
-    const storageToken = localStorage.getItem('token');
-    if (storageToken) {
-      const decoded = jwtDecode(storageToken);
+    const token = tokenRef.current;
+    if (!token) return;
 
-      // Check if the token has expired
-      if (decoded.exp > Date.now() / 1000) {
-        setToken(storageToken);
-      } else {
-        // Delete the token from localStorage
-        localStorage.removeItem('token');
-      }
+    try {
+      const decoded = jwtDecode(token);
+      setUser({ id: decoded.userId, username: decoded.username });
+    } catch {
+      localStorage.removeItem('token');
+      tokenRef.current = null;
     }
   }, []);
 
-  // Every time the token changes, set the user
-  useEffect(() => {
-    if (token) {
+  function login(token) {
+    localStorage.setItem('token', token);
+    tokenRef.current = token;
+
+    try {
       const decoded = jwtDecode(token);
       setUser({ id: decoded.userId, username: decoded.username });
-    } else {
-      setUser(null);
+    } catch {
+      console.error('Invalid token');
     }
-  }, [token]);
+  }
 
   return (
-    <UserContext.Provider value={{ user, token, setToken }}>
+    <UserContext.Provider value={{ user, setUser, tokenRef, login }}>
       <Router>
         <Routes>
           <Route path="/" element={<Layout />}>

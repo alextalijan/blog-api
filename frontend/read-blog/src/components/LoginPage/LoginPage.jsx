@@ -6,7 +6,7 @@ import { UserContext } from '../../App';
 function LoginPage() {
   const [error, setError] = useState(null);
 
-  const { setToken } = useContext(UserContext);
+  const { login } = useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -28,8 +28,7 @@ function LoginPage() {
           return setError(response.message);
         }
 
-        localStorage.setItem('token', response.token);
-        setToken(response.token);
+        login(response.token);
         navigate('/');
       })
       .catch((err) => {

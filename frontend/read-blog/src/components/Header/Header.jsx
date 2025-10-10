@@ -4,14 +4,15 @@ import { useContext } from 'react';
 import { UserContext } from '../../App';
 
 function Header() {
-  const { user, setToken } = useContext(UserContext);
+  const { user, setUser, tokenRef } = useContext(UserContext);
 
   const navigate = useNavigate();
 
   function handleLogout() {
     if (localStorage.getItem('token')) {
       localStorage.removeItem('token');
-      setToken(null);
+      tokenRef.current = null;
+      setUser(null);
       navigate('/');
     }
   }

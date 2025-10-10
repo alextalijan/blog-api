@@ -15,7 +15,7 @@ function ModalPost({ postId, handleClick }) {
   const [refreshComments, setRefreshComments] = useState(false);
   const [editCommentId, setEditCommentId] = useState(null);
 
-  const { user, token } = useContext(UserContext);
+  const { user, tokenRef } = useContext(UserContext);
 
   // Capture reference to the edit comment text area
   const editComment = useRef(null);
@@ -73,7 +73,7 @@ function ModalPost({ postId, handleClick }) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${tokenRef.current}`,
       },
       body: JSON.stringify({
         text: event.target.comment.value.trim(),
@@ -97,7 +97,7 @@ function ModalPost({ postId, handleClick }) {
     fetch(`http://localhost:3000/posts/${postId}/comments/${id}`, {
       method: 'DELETE',
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${tokenRef.current}`,
       },
     })
       .then((response) => response.json())
@@ -118,7 +118,7 @@ function ModalPost({ postId, handleClick }) {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${tokenRef.current}`,
       },
       body: JSON.stringify({
         text: editComment.current.value.trim(),
