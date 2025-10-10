@@ -157,7 +157,25 @@ function ModalPost({ postId, handleClick }) {
                 {comments.map((comment) => {
                   return (
                     <div key={comment.id} className={styles.comment}>
-                      <b className={styles.commenter}>{comment.user.username}</b>
+                      <div className={styles['comment-header']}>
+                        <b className={styles.commenter}>{comment.user.username}</b>
+                        {comment.user.id === user.id && (
+                          <>
+                            <button
+                              type="button"
+                              className={`${styles['comment-btn']} ${styles['comment-edit-btn']}`}
+                            >
+                              Edit
+                            </button>
+                            <button
+                              type="button"
+                              className={`${styles['comment-btn']} ${styles['comment-delete-btn']}`}
+                            >
+                              Delete
+                            </button>
+                          </>
+                        )}
+                      </div>
                       <p className={styles['comment-text']}>{comment.text}</p>
                       <p className={styles['comment-date']}>
                         Posted: {prettifyDate(comment.createdAt)}

@@ -131,6 +131,37 @@
   gap: 1rem;
 }
 
+.comment-header {
+  display: flex;
+  gap: 1rem;
+}
+
+.commenter {
+  margin-right: auto;
+}
+
+.comment-btn {
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: transform 0.3s;
+  border: none;
+}
+
+.comment-btn:hover {
+  transform: scale(1.1);
+}
+
+.comment-edit-btn {
+  background-color: #a8e6a3;
+  color: #1a3e1a;
+}
+
+.comment-delete-btn {
+  background-color: #f6a8a8;
+  color: #660000;
+}
+
 .comment-date {
   align-self: end;
   opacity: 0.6;
