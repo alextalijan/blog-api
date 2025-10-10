@@ -156,6 +156,6 @@ module.exports = {
       },
     });
 
-    res.json(comment);
+    res.json({ success: true, comment });
   },
 };

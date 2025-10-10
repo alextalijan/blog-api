@@ -89,6 +89,26 @@ function ModalPost({ postId, handleClick }) {
       });
   }
 
+  function handleDeleteComment(id) {
+    fetch(`http://localhost:3000/posts/${postId}/comments/${id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        if (!response.success) {
+          return alert(response.message);
+        }
+
+        setRefreshComments((prev) => !prev);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  }
+
   return (
     <>
       <div
@@ -170,6 +190,7 @@ function ModalPost({ postId, handleClick }) {
                             <button
                               type="button"
                               className={`${styles['comment-btn']} ${styles['comment-delete-btn']}`}
+                              onClick={() => handleDeleteComment(comment.id)}
                             >
                               Delete
                             </button>
