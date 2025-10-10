@@ -1,11 +1,11 @@
 import prettifyDate from '../../utils/prettifyDate';
 import styles from './Post.module.css';
 
-function Post({ title, text, date, author, numOfComments, handleClick }) {
+function Post({ title, text, date, numOfComments, handleClick, author = null }) {
   return (
     <div className={styles.card}>
       <h2 className={styles.title}>{title}</h2>
-      <span className={styles.author}>Author: {author}</span>
+      {author && <span className={styles.author}>Author: {author}</span>}
       <p className={styles.text}>{text}</p>
       <div className={styles.footer}>
         <span className={styles.date}>Posted on {prettifyDate(date)}</span>
