@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Post from '../Post/Post';
+import ModalPost from '../ModalPost/ModalPost';
 import styles from './AuthorPage.module.css';
 
 function AuthorPage() {
@@ -11,8 +12,7 @@ function AuthorPage() {
   const [posts, setPosts] = useState([]);
   const [postsError, setPostsError] = useState(null);
   const [postsLoading, setPostsLoading] = useState(true);
-
-  const navigate = useNavigate();
+  const [activePostId, setActivePostId] = useState(null);
 
   // Fetch the author
   useEffect(() => {
@@ -67,11 +67,14 @@ function AuthorPage() {
                 text={post.text}
                 date={post.updatedAt}
                 numOfComments={post._count.comments}
-                handleClick={() => navigate(`/posts/${post.id}`)}
+                handleClick={() => setActivePostId(post.id)}
               />
             );
           })}
         </div>
+      )}
+      {activePostId && (
+        <ModalPost postId={activePostId} handleClick={() => setActivePostId(null)} />
       )}
     </>
   );
