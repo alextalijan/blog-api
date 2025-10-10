@@ -37,6 +37,9 @@ function AccountPage() {
       });
   }
 
+  // If the user hasn't loaded yet
+  if (!user) return <p>Loading account...</p>;
+
   return (
     <>
       <h1 className={styles.h1}>My Account</h1>

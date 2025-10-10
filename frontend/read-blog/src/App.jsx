@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { useEffect, useState, createContext, useRef } from 'react';
+import { useState, createContext, useRef } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import Layout from './components/Layout/Layout';
@@ -10,22 +10,34 @@ import AccountPage from './components/AccountPage/AccountPage';
 export const UserContext = createContext();
 
 function App() {
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
   const tokenRef = useRef(localStorage.getItem('token'));
 
   // On the initial mount, load the user if he exists
-  useEffect(() => {
+  const [user, setUser] = useState(() => {
     const token = tokenRef.current;
-    if (!token) return;
+    if (!token) return null;
 
     try {
       const decoded = jwtDecode(token);
-      setUser({ id: decoded.userId, username: decoded.username });
+      // expire check (exp is seconds since epoch)
+      if (decoded.exp && decoded.exp <= Date.now() / 1000) {
+        localStorage.removeItem('token');
+        tokenRef.current = null;
+        return null;
+      }
+
+      return {
+        id: decoded.userId,
+        username: decoded.username,
+      };
     } catch {
+      // invalid token -> clear it
       localStorage.removeItem('token');
       tokenRef.current = null;
+      return null;
     }
-  }, []);
+  });
 
   function login(token) {
     localStorage.setItem('token', token);
