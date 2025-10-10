@@ -25,7 +25,7 @@ function AuthorPage() {
 
         setAuthor(response.user);
       })
-      .catch((error) => setAuthorError(error.message))
+      .catch(() => setAuthorError("Failed to fetch author's name."))
       .finally(() => setAuthorLoading(false));
   }, [authorId]);
 
@@ -47,16 +47,16 @@ function AuthorPage() {
   return (
     <>
       {authorError ? (
-        <p>{authorError}</p>
+        <p className={styles.h1}>{authorError}</p>
       ) : authorLoading ? (
-        <p>Loading author...</p>
+        <p className={`${styles.loading} ${styles.h1}`}>Loading author...</p>
       ) : (
-        <h1>{author.username}</h1>
+        <h1 className={styles.h1}>{author.username}</h1>
       )}
       {postsError ? (
-        <p>{postsError}</p>
+        <p className={styles['posts-error']}>{postsError}</p>
       ) : postsLoading ? (
-        <p>Loading posts...</p>
+        <p className={`${styles.loading} ${styles['loading-posts']}`}>Loading posts...</p>
       ) : (
         <div className={styles.posts}>
           {posts.map((post) => {
