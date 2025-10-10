@@ -7,6 +7,7 @@ import HomePage from './components/HomePage/HomePage';
 import LoginPage from './components/LoginPage/LoginPage';
 import AccountPage from './components/AccountPage/AccountPage';
 import AuthorPage from './components/AuthorPage/AuthorPage';
+import PostPage from './components/PostPage/PostPage';
 
 export const UserContext = createContext();
 
@@ -59,6 +60,7 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<HomePage />} />
             <Route path="/authors/:authorId" element={<AuthorPage />} />
+            <Route path="/posts/:postId" element={<PostPage />} />
 
             {/* Protected section */}
             <Route element={<PrivateRoute />}>
