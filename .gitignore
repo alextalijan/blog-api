@@ -144,4 +144,4 @@ vite.config.ts.timestamp-*
 .eslintrc.json
 
 # Prisma
-/backend/prisma/migrations
+prisma/migrations
